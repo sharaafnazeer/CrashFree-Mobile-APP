@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:crash_free_mobile_app/models/ApiResponse.dart';
-import 'package:crash_free_mobile_app/models/CloseCircle.dart';
 import 'package:crash_free_mobile_app/models/CloseCircleUser.dart';
+import 'package:crash_free_mobile_app/util/UserSession.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
 Future<List<CloseCircleUser>> fetchAllUsers() async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/user"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA"},);
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/user"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,},);
 
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
@@ -21,9 +22,10 @@ Future<List<CloseCircleUser>> fetchAllUsers() async {
 }
 
 Future<List<CloseCircleUser>> fetchAllAcceptedCircle() async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/circle/get-approved"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA"},);
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle/get-approved"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,},);
 
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
@@ -35,9 +37,10 @@ Future<List<CloseCircleUser>> fetchAllAcceptedCircle() async {
 }
 
 Future<List<CloseCircleUser>> fetchAllPendingCircle() async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/circle/get-pending"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA"},);
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle/get-pending"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,},);
 
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
@@ -49,9 +52,10 @@ Future<List<CloseCircleUser>> fetchAllPendingCircle() async {
 }
 
 Future<List<CloseCircleUser>> fetchAllRequestedCircle() async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/circle/get-requested"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA"},);
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle/get-requested"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession},);
 
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
@@ -63,23 +67,25 @@ Future<List<CloseCircleUser>> fetchAllRequestedCircle() async {
 }
 
 Future<ApiResponse> deleteCircleUser(CloseCircleUser circleUser) async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.delete(new Uri.http("127.0.0.1:3000", "/api/circle/" + circleUser.id), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.delete(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle/" + circleUser.id), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},
       );
 
   if (response.statusCode == 200) {
     return ApiResponse.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to dekete circle');
+    throw Exception('Failed to delete circle');
   }
 }
 
 Future<ApiResponse> saveCircleUser(CloseCircleUser circleUser) async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.post(new Uri.http("127.0.0.1:3000", "/api/circle"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(<String, dynamic>{
         'circleUser': circleUser.circleUserId,
@@ -90,14 +96,15 @@ Future<ApiResponse> saveCircleUser(CloseCircleUser circleUser) async {
   if (response.statusCode == 200) {
     return ApiResponse.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to dekete circle');
+    throw Exception('Failed to save circle');
   }
 }
 
 Future<ApiResponse> approveCircleUser(CloseCircleUser circleUser) async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.post(new Uri.http("127.0.0.1:3000", "/api/circle/approve"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/circle/approve"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(<String, dynamic>{
         'circleUser': circleUser.circleUserId
@@ -107,6 +114,6 @@ Future<ApiResponse> approveCircleUser(CloseCircleUser circleUser) async {
   if (response.statusCode == 200) {
     return ApiResponse.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to dekete circle');
+    throw Exception('Failed to approve circle');
   }
 }

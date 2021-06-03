@@ -14,7 +14,7 @@ class Vehicle {
 
   factory Vehicle.fromJson(json) {
     return Vehicle(
-      id: json['_id'],
+      id: json['id'],
       vehicleNo: json['vehicleNo'],
       brand: json['brand'],
       model: json['model'],
@@ -26,7 +26,7 @@ class Vehicle {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'vehicleNo': vehicleNo,
       'brand': brand,
       'model': model,

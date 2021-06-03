@@ -2,15 +2,16 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:crash_free_mobile_app/models/ApiResponse.dart';
 import 'package:crash_free_mobile_app/models/Vehicle.dart';
+import 'package:crash_free_mobile_app/util/UserSession.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
 Future<List<Vehicle>> fetchAllVehicles() async {
-
+  final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/vehicle"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA"},);
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/vehicle"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,},);
 
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
@@ -22,9 +23,10 @@ Future<List<Vehicle>> fetchAllVehicles() async {
 }
 
 Future<ApiResponse> saveVehicle(Vehicle vehicle) async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.post(new Uri.http("127.0.0.1:3000", "/api/vehicle"), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/vehicle"), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
                 HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(vehicle.toJson()));
 
@@ -36,10 +38,10 @@ Future<ApiResponse> saveVehicle(Vehicle vehicle) async {
 }
 
 Future<ApiResponse> updateVehicle(Vehicle vehicle) async {
-
+  final userSession = await UserSession.getSession();
   final response =
-      await http.put(new Uri.http("127.0.0.1:3000", "/api/vehicle/" + vehicle.id), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.put(new Uri.https("crash-free-backend.herokuapp.com", "/api/vehicle/" + vehicle.id), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(vehicle.toJson()));
 
@@ -51,9 +53,10 @@ Future<ApiResponse> updateVehicle(Vehicle vehicle) async {
 }
 
 Future<ApiResponse> deleteVehicle(Vehicle vehicle) async {
+  final userSession = await UserSession.getSession();
   final response =
-      await http.delete(new Uri.http("127.0.0.1:3000", "/api/vehicle/" + vehicle.id), 
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwNTFkY2RiYmJiMTUwMGZlMDE3NjkxMyIsImVtYWlsIjoic2hhcmFhZkBnbWFpbC5jb20ifSwiaWF0IjoxNjE2MDUzNzE1fQ.L0JdbnroCHnazsglFzMJyuVLG54-8XnWQlHNifE54vA",
+      await http.delete(new Uri.https("crash-free-backend.herokuapp.com", "/api/vehicle/" + vehicle.id), 
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},
       );
 

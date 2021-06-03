@@ -11,7 +11,7 @@ class CloseCircle {
 
   factory CloseCircle.fromJson(json) {
     return CloseCircle(
-      id: json['_id'],
+      id: json['id'],
       firstName: json['firstName'],
       lastName: json['lastName'],
       email: json['email'],

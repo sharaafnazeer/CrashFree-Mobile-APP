@@ -9,7 +9,7 @@ import 'dart:convert';
 Future<Auth> login(String email, String password) async {
 
   final response =
-      await http.post(new Uri.http("127.0.0.1:3000", "/api/login"), 
+      await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/login"), 
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(<String, String>{
         'email': email,
@@ -26,7 +26,7 @@ Future<Auth> login(String email, String password) async {
 Future<Auth> register(dynamic user) async {
 
   final response =
-      await http.post(new Uri.http("127.0.0.1:3000", "/api/register"), 
+      await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/register"), 
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(user.toString()));
 
@@ -41,7 +41,7 @@ Future<String> verify() async {
 
   final userSession = await UserSession.getSession();
   final response =
-      await http.get(new Uri.http("127.0.0.1:3000", "/api/verify"), 
+      await http.get(new Uri.https("crash-free-backend.herokuapp.com", "/api/verify"), 
       headers: {HttpHeaders.authorizationHeader: "Bearer " + userSession,
       HttpHeaders.contentTypeHeader: 'application/json'},);
 

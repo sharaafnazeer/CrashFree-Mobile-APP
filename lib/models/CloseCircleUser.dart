@@ -17,7 +17,7 @@ class CloseCircleUser {
 
   factory CloseCircleUser.fromJson(json) {
     return CloseCircleUser(
-      id: json['_id'],
+      id: json['id'],
       circleUserId: json['circleUserId'],
       circleUserName: json['circleUserName'],
       circleUserEmail: json['circleUserEmail'],      

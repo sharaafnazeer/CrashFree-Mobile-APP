@@ -8,7 +8,7 @@ class User {
   String password;
   String address;
 
-  User({@required this.firstName, this.lastName, this.email, this.phone, this.password, this.address});
+  User({this.firstName, this.lastName, this.email, this.phone, this.password, this.address});
 
   factory User.fromJson(json) {
     return User(

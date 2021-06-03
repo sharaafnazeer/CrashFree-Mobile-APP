@@ -1,6 +1,4 @@
-import 'package:crash_free_mobile_app/Welcome.dart';
 import 'package:crash_free_mobile_app/api/AuthAPI.dart';
-import 'package:crash_free_mobile_app/driver/DriverHome.dart';
 import 'package:crash_free_mobile_app/util/RouteGenerator.dart';
 import 'package:crash_free_mobile_app/widgets/CustomButton.dart';
 import 'package:crash_free_mobile_app/widgets/HeroImage.dart';
@@ -52,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           HeroImage(
-              height:  MediaQuery.of(context).size.height * 0.35,
+              height:  MediaQuery.of(context).size.height * 0.5,
           ),
           Expanded(
             child: ListView(
@@ -108,6 +106,7 @@ class LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
+                      SizedBox(height: 20,),
                       CustomButton(buttonText: 'Login', onBtnPressed: () async {
                         if (_formKey.currentState.validate()) {
 

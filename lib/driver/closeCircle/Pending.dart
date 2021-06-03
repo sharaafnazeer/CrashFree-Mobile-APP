@@ -1,5 +1,4 @@
 import 'package:crash_free_mobile_app/api/CloseCircleAPI.dart';
-import 'package:crash_free_mobile_app/models/CloseCircle.dart';
 import 'package:crash_free_mobile_app/models/CloseCircleUser.dart';
 import 'package:flutter/material.dart';
 

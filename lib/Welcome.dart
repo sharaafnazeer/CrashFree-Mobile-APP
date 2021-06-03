@@ -1,4 +1,3 @@
-import 'package:crash_free_mobile_app/Login.dart';
 import 'package:crash_free_mobile_app/widgets/CustomButton.dart';
 import 'package:crash_free_mobile_app/widgets/HeroImage.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,10 @@ class Welcome extends StatelessWidget {
           Positioned(
             top: 0,
             child:  HeroImage(
-              height:  MediaQuery.of(context).size.height * 1,
+              height:  MediaQuery.of(context).size.height * 0.75,
             ),
           ),
+          // SizedBox(height: 10,),
           Positioned(
             bottom: 5,
             child: Container(

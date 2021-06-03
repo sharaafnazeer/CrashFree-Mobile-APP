@@ -176,7 +176,15 @@ class RegisterPageState extends State<RegisterPage> {
 
                           showLoaderDialog(context);
 
-                          await register(new User(firstName, lastName, email, phoneNumber, password, address)).then((value) => {
+                          var user = new User();
+                          user.firstName = firstName;
+                          user.lastName = lastName;
+                          user.email = email;
+                          user.phone = phoneNumber;
+                          user.password = password;
+                          user.address = address;
+
+                          await register(user).then((value) => {
                             
                               print(value.token),
                               saveCredentials(value.token, value.verified)

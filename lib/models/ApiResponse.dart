@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class ApiResponse {
   final int status;
   final String description;
