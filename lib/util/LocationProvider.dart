@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crash_free_mobile_app/api/DrivingApi.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +11,7 @@ class LocationProvider with ChangeNotifier {
   Location get location => _location;
   LatLng _locationPosition;
   LatLng get locationPosition => _locationPosition;
+  StreamSubscription<LocationData> locationSubscription;
 
   bool locationServiceActive = true;
 
@@ -16,12 +19,15 @@ class LocationProvider with ChangeNotifier {
     _location = new Location();
   }
 
-  initialization(bool isDriving) async {
-    debugPrint('Location ===>' + isDriving.toString());
-    await getUserLocation(isDriving);
+  initialization() async {
+    await getUserLocation();
   }
 
-  getUserLocation(bool isDriving) async {
+  resume() async {
+    locationSubscription.resume();
+  }
+
+  getUserLocation() async {
     bool _serviceEnabled = false;
 
     PermissionStatus _permissionGranted;
@@ -45,17 +51,18 @@ class LocationProvider with ChangeNotifier {
         return;
       }
     }
-    
-    location.onLocationChanged().listen((LocationData currentLocation) async {
+
+    locationSubscription = location.onLocationChanged().listen((LocationData currentLocation)
+    {
       _locationPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
-
-      debugPrint('Location inside ===' + isDriving.toString());
-      if(isDriving) {
-        await updateDrivingLocation(locationPosition.latitude, locationPosition.longitude, isDriving)
-            .then((value) => {});
-      }
+      updateDrivingLocation(locationPosition.latitude, locationPosition.longitude)
+          .then((value) => {});
     });
-
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

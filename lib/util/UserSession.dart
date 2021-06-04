@@ -22,6 +22,11 @@ class UserSession {
     return prefs.getString('token');
   }
 
+  static Future<String> getUserId () async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
   static void startStopDriving (bool isDriving) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('driving', isDriving);
@@ -42,14 +47,19 @@ class UserSession {
     return prefs.getString('vehicleId');
   }
 
-  static void setAccidentParameters (double accelerometerThreshold, double notifyTime) async {
+  static void setAccidentParameters (double accelerometerThreshold, int notifyTime) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('accelerometerThreshold', accelerometerThreshold);
-    prefs.setDouble('notifyTime', notifyTime);
+    prefs.setInt('notifyTime', notifyTime);
   }
 
   static Future<double> getAccidentThreshold () async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getDouble('accelerometerThreshold');
+  }
+
+  static Future<int> getNotifyTime () async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('notifyTime');
   }
 }

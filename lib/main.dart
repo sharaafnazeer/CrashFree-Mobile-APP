@@ -4,6 +4,7 @@ import 'package:crash_free_mobile_app/Register.dart';
 import 'package:crash_free_mobile_app/Splash.dart';
 import 'package:crash_free_mobile_app/Welcome.dart';
 import 'package:crash_free_mobile_app/driver/DriverHome.dart';
+import 'package:crash_free_mobile_app/driver/DrowsyPage.dart';
 import 'package:crash_free_mobile_app/driver/SuspiciousPage.dart';
 import 'package:crash_free_mobile_app/util/LocationProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
                     '/register': (BuildContext context) => RegisterPage(),
                     '/login': (BuildContext context) => LoginPage(),
                     '/driverHome': (BuildContext context) => DriverHome(),
-                    '/suspicious': (BuildContext context) => SuspiciousPage(),
+                    '/drowsy': (BuildContext context) => DrowsyPage(),
                   },
                   theme: ThemeData(
                     visualDensity: VisualDensity.adaptivePlatformDensity,

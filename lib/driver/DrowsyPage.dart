@@ -6,27 +6,18 @@ import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SuspiciousPage extends StatefulWidget {
-  final int notifyTime;
-  SuspiciousPage(this.notifyTime);
-
+class DrowsyPage extends StatefulWidget {
   @override
-  SuspiciousPageState createState() => new SuspiciousPageState();
+  DrowsyPageState createState() => new DrowsyPageState();
 }
 
-class SuspiciousPageState extends State<SuspiciousPage> {
+class DrowsyPageState extends State<DrowsyPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  CountdownTimerController controller;
   bool isButtonVisible = true;
-  int endTime;
 
   @override
   void initState() {
     super.initState();
-    endTime = DateTime
-        .now()
-        .millisecondsSinceEpoch + 1000 * widget.notifyTime ?? 15;
-    controller = CountdownTimerController(endTime: endTime, onEnd: onEnd);
 
     FlutterRingtonePlayer.play(
       android: AndroidSounds.notification,
@@ -38,22 +29,14 @@ class SuspiciousPageState extends State<SuspiciousPage> {
   }
 
   void onEnd() {
-    isButtonVisible = false;
-    sendUpdate(2);
-  }
 
-  void sendUpdate(int status) {
-
-    FlutterRingtonePlayer.stop();
-    if(status == 2) {
-      UserSession.startStopDriving(false);
-    }
-    controller.disposeTimer();
-
-    updateDriverOkay(status).then((value) =>
+    updateDriverDrowsy(false).then((value) =>
     {
-      Navigator.pop(context),
+        FlutterRingtonePlayer.stop(),
+        isButtonVisible = false,
+        Navigator.pop(context)
     });
+
   }
 
   @override
@@ -69,7 +52,7 @@ class SuspiciousPageState extends State<SuspiciousPage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.fromLTRB(10, 24, 10, 10),
                     child: new Image.asset(
-                      'images/accident.png',
+                      'images/sleepy.png',
                       height: 200.0,
                       fit: BoxFit.fill,
                     ),
@@ -77,7 +60,7 @@ class SuspiciousPageState extends State<SuspiciousPage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Are you okay?',
+                      Text('You seems drowsy!',
                           style: TextStyle(color: Colors.white, fontSize: 25)),
                     ],
                   ),
@@ -86,21 +69,14 @@ class SuspiciousPageState extends State<SuspiciousPage> {
                   ),
                   Center(
                     child: Text(
-                      "We suspect a suspicious activity related to an accident. Are you really okay?",
+                      "We suspect that you are not okay to perform driving. Are you okay?",
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  Center(
-                    child: CountdownTimer(
-                        controller: controller,
-                        onEnd: onEnd,
-                        endTime: endTime,
-                        textStyle:
-                        TextStyle(color: Colors.white, fontSize: 35)),
-                  ),
+
                   isButtonVisible ?
                   ConstrainedBox(
                       constraints:
@@ -119,9 +95,9 @@ class SuspiciousPageState extends State<SuspiciousPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
-                                  sendUpdate(1);
+                                  onEnd();
                                 },
-                                child: Text('YES I AM OKAY'),
+                                child: Text('CONTINUE DRIVING'),
                               ),
                             ],
                           ))) : Row()
@@ -133,7 +109,6 @@ class SuspiciousPageState extends State<SuspiciousPage> {
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 }

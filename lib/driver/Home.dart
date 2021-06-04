@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crash_free_mobile_app/api/DrivingApi.dart';
 import 'package:crash_free_mobile_app/api/VehicleApi.dart';
+import 'package:crash_free_mobile_app/driver/SuspiciousPage.dart';
 import 'package:crash_free_mobile_app/models/Vehicle.dart';
 import 'package:crash_free_mobile_app/util/LocationProvider.dart';
 import 'package:crash_free_mobile_app/util/UserSession.dart';
@@ -17,6 +18,7 @@ class HomePageState extends State<HomePage> {
   bool isDriving = false;
   String vehicleId;
   String userId = 'NOID';
+  int notifyTime = 50;
   Future<List<Vehicle>> futureAllVehicles;
 
   @override
@@ -24,6 +26,8 @@ class HomePageState extends State<HomePage> {
     super.initState();
     futureAllVehicles = fetchAllVehicles();
     _isDriving();
+    Provider.of<LocationProvider>(context, listen: false)
+        .initialization();
   }
 
   _isDriving() async {
@@ -32,14 +36,11 @@ class HomePageState extends State<HomePage> {
       isDriving = (prefs.getBool('driving') ?? false);
       vehicleId = (prefs.getString('vehicleId') ?? null);
       userId = prefs.getString('userId');
+      notifyTime = prefs.getInt('notifyTime');
     });
 
     debugPrint('Driving Started!! =====> ' + userId.toString());
     debugPrint('Driving Started!! =====> ' + vehicleId.toString());
-    // debugPrint(userId);
-
-    Provider.of<LocationProvider>(context, listen: false)
-        .initialization(isDriving);
   }
 
   Widget userTrackingData() {
@@ -53,7 +54,7 @@ class HomePageState extends State<HomePage> {
         UserSession.setAccidentParameters(
             double.parse(
                 documentSnapshot.get('accelerometerThreshold').toString()),
-            double.parse(documentSnapshot.get('notifyTime').toString()));
+            documentSnapshot.get('notifyTime'));
       }
     });
 
@@ -66,14 +67,21 @@ class HomePageState extends State<HomePage> {
           if (!snapshot.hasData) {
             debugPrint('Errro');
             return new Text("Loading");
-          } else {
-
           }
           var userDocument = snapshot.data;
           debugPrint(userDocument.data().toString());
-          if (userDocument['suspecious'] && !userDocument['accidentOccured']) {
+          if (isDriving && userDocument['suspecious'] && !userDocument['accidentOccured']) {
             Future.delayed(const Duration(milliseconds: 1000), () {
-              Navigator.of(context).pushNamed('/suspicious');
+
+
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuspiciousPage(notifyTime)));
+            });
+          }
+
+          if (isDriving &&  userDocument['isDrowsy'] && !userDocument['suspecious']
+              && !userDocument['accidentOccured']) {
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              Navigator.of(context).pushNamed('/drowsy');
             });
           }
 
@@ -107,6 +115,19 @@ class HomePageState extends State<HomePage> {
                             .toString()),
                       ],
                     ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Center(
+                      child: Text(
+                        "We advise you not to close this page while driving!",
+                        textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 12)
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
                     userDocument['suspecious']
                         ? Text('Suspicious Activity Detected')
                         : Text('Drive Safely!'),
@@ -132,7 +153,7 @@ class HomePageState extends State<HomePage> {
               alignment: Alignment.center,
               child: new Image.asset(
                 'images/img.png',
-                height: 200.0,
+                height: 150.0,
                 fit: BoxFit.fill,
               ),
             ),
@@ -200,6 +221,12 @@ class HomePageState extends State<HomePage> {
 
                             _isDriving();
 
+                            // if(!isDriving) {
+                            //   Provider.of<LocationProvider>(context, listen: false).dispose();
+                            // } else {
+                            //   Provider.of<LocationProvider>(context, listen: false).resume();
+                            // }
+
                             //Provider.of<LocationProvider>(context, listen: false).initialization(isDriving);
                             await startStopDriving(
                                     vehicleId,
@@ -227,5 +254,11 @@ class HomePageState extends State<HomePage> {
         ));
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // Provider.of<LocationProvider>(context, listen: false).dispose();
+    super.dispose();
   }
 }
