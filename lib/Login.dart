@@ -50,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           HeroImage(
-              height:  MediaQuery.of(context).size.height * 0.5,
+              height:  MediaQuery.of(context).size.height * 0.35,
           ),
           Expanded(
             child: ListView(
@@ -115,8 +115,8 @@ class LoginPageState extends State<LoginPage> {
                           showLoaderDialog(context);
                           await login(email, password).then((value) => {
                               
-                              print(value.token),
-                              saveCredentials(value.token, value.verified)
+                              print(value.id),
+                              saveCredentials(value.token, value.verified, value.id)
                               ,Navigator.of(context).pushNamedAndRemoveUntil(
                                 RouteGenerator.driverMain,
                                 (Route<dynamic> route) => false
@@ -140,8 +140,9 @@ class LoginPageState extends State<LoginPage> {
 
 }
 
-saveCredentials (String token, bool active) async {
+saveCredentials (String token, bool active, String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
     prefs.setBool('verified', active);
+    prefs.setString('userId', id);
 }

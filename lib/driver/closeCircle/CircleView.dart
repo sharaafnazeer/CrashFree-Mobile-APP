@@ -5,19 +5,25 @@ import 'package:crash_free_mobile_app/models/CloseCircleUser.dart';
 import 'package:crash_free_mobile_app/util/toast.dart';
 import 'package:flutter/material.dart';
 
-class CircleViewPage extends StatelessWidget {
+class CircleViewPage extends StatefulWidget {
 
   final CloseCircleUser closeCircleUser;
-  ApiResponse response;
-  // receive data from the FirstScreen as a parameter
+
   CircleViewPage({Key key, this.closeCircleUser}) : super(key: key);
+
+  @override
+  _CircleViewPageState createState() => _CircleViewPageState();
+}
+
+class _CircleViewPageState extends State<CircleViewPage> {
+  ApiResponse response;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(closeCircleUser != null
-              ? closeCircleUser.circleUserName
+          title: Text(widget.closeCircleUser != null
+              ? widget.closeCircleUser.circleUserName
               : 'Annonymous User'),
         ),
         body: Container(
@@ -39,7 +45,7 @@ class CircleViewPage extends StatelessWidget {
                   children: [
                     new Container(
                         child: Text(
-                          closeCircleUser.circleUserName,
+                          widget.closeCircleUser.circleUserName,
                           textAlign: TextAlign.left,
                           maxLines: 1,
                           style: TextStyle(
@@ -51,7 +57,7 @@ class CircleViewPage extends StatelessWidget {
                                 topRight: Radius.circular(10.0)))),
                     new Container(
                         child: Text(
-                          closeCircleUser.circleUserPhone,
+                          widget.closeCircleUser.circleUserPhone,
                           textAlign: TextAlign.left,
                           maxLines: 1,
                           style: TextStyle(
@@ -72,7 +78,7 @@ class CircleViewPage extends StatelessWidget {
                   children: [
                     new Container(
                         child: Text(
-                          closeCircleUser.circleUserEmail,
+                          widget.closeCircleUser.circleUserEmail,
                           textAlign: TextAlign.left,
                           maxLines: 1,
                           style: TextStyle(
@@ -84,7 +90,7 @@ class CircleViewPage extends StatelessWidget {
                                 topRight: Radius.circular(10.0)))),
                     new Container(
                         child: Text(
-                          closeCircleUser.type,
+                          widget.closeCircleUser.type,
                           textAlign: TextAlign.left,
                           maxLines: 1,
                           style: TextStyle(
@@ -103,7 +109,7 @@ class CircleViewPage extends StatelessWidget {
             constraints: const BoxConstraints(minWidth: double.infinity),
             child : Padding(
               padding: EdgeInsets.fromLTRB(0, 24.0, 0, 24.0),
-              child: closeCircleUser.status == 1 ?  
+              child: widget.closeCircleUser.status == 1 ?  
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -115,7 +121,7 @@ class CircleViewPage extends StatelessWidget {
                       ),
                       onPressed: () async {
                         showLoaderDialog(context);
-                          await deleteCircleUser(closeCircleUser).then((value) => {
+                          await deleteCircleUser(widget.closeCircleUser).then((value) => {
                               response = value,
                               showSuccess(response.response),
                               Navigator.of(context, rootNavigator: true).pop(),
@@ -127,7 +133,7 @@ class CircleViewPage extends StatelessWidget {
                 ],
               ) :
               
-              closeCircleUser.otherStatus == 1 ?               
+              widget.closeCircleUser.otherStatus == 1 ?               
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -139,7 +145,7 @@ class CircleViewPage extends StatelessWidget {
                       ),
                       onPressed: () async {
                         showLoaderDialog(context);
-                          await approveCircleUser(closeCircleUser).then((value) => {
+                          await approveCircleUser(widget.closeCircleUser).then((value) => {
                               response = value,
                               showSuccess(response.response),
                               Navigator.of(context, rootNavigator: true).pop(),
@@ -158,7 +164,7 @@ class CircleViewPage extends StatelessWidget {
                       ),
                       onPressed: () async {
                         showLoaderDialog(context);
-                          await deleteCircleUser(closeCircleUser).then((value) => {
+                          await deleteCircleUser(widget.closeCircleUser).then((value) => {
                               response = value,
                               showSuccess(response.response),
                               Navigator.of(context, rootNavigator: true).pop(),
@@ -170,7 +176,7 @@ class CircleViewPage extends StatelessWidget {
                   ],
               ) : 
 
-              closeCircleUser.otherStatus == 2 ? 
+              widget.closeCircleUser.otherStatus == 2 ? 
 
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -184,7 +190,7 @@ class CircleViewPage extends StatelessWidget {
                       ),
                       onPressed: () async {
                         showLoaderDialog(context);
-                          await deleteCircleUser(closeCircleUser).then((value) => {
+                          await deleteCircleUser(widget.closeCircleUser).then((value) => {
                               response = value,
                               showSuccess(response.response),
                               Navigator.of(context, rootNavigator: true).pop(),
@@ -208,7 +214,7 @@ class CircleViewPage extends StatelessWidget {
                       ),
                       onPressed: () async {
                         showLoaderDialog(context);
-                          await saveCircleUser(closeCircleUser).then((value) => {
+                          await saveCircleUser(widget.closeCircleUser).then((value) => {
                               response = value,
                               showSuccess(response.response),
                               Navigator.of(context, rootNavigator: true).pop(),

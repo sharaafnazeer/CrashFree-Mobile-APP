@@ -1,42 +1,79 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crash_free_mobile_app/Login.dart';
 import 'package:crash_free_mobile_app/Register.dart';
 import 'package:crash_free_mobile_app/Splash.dart';
 import 'package:crash_free_mobile_app/Welcome.dart';
 import 'package:crash_free_mobile_app/driver/DriverHome.dart';
+import 'package:crash_free_mobile_app/driver/SuspiciousPage.dart';
+import 'package:crash_free_mobile_app/util/LocationProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',  
-      routes: {
-        '/': (BuildContext context) => SplashScreenPage(),
-        '/welcome': (BuildContext context) => Welcome(),
-        '/register': (BuildContext context) => RegisterPage(),
-        '/login': (BuildContext context) => LoginPage(),
-        '/driverHome': (BuildContext context) => DriverHome(),
-      },
-      theme: ThemeData(
 
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        primaryColor: Colors.red,
-        accentColor: Colors.red,
-        brightness: Brightness.dark,
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
-          headline5: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 30, fontStyle: FontStyle.italic),
-          bodyText1: TextStyle(fontSize: 20),
-          bodyText2: TextStyle(fontSize: 18),
-        ),
-      ),
-      title: 'Crash Free',
-      debugShowCheckedModeBanner: false,
-    );
+
+    Future<FirebaseApp> fbApp = Firebase.initializeApp();
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => LocationProvider(),
+            child: DriverHome(),
+          )
+        ],
+        child: FutureBuilder(
+            future: fbApp,
+            builder: (context, snap) {
+              if (snap.hasError) {
+                return Center(child: Text('Something went wrong!'),);
+
+              } else if (snap.hasData) {
+                return MaterialApp(
+                  initialRoute: '/',
+                  routes: {
+                    '/': (BuildContext context) => SplashScreenPage(),
+                    '/welcome': (BuildContext context) => Welcome(),
+                    '/register': (BuildContext context) => RegisterPage(),
+                    '/login': (BuildContext context) => LoginPage(),
+                    '/driverHome': (BuildContext context) => DriverHome(),
+                    '/suspicious': (BuildContext context) => SuspiciousPage(),
+                  },
+                  theme: ThemeData(
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                    primaryColor: Colors.red,
+                    accentColor: Colors.red,
+                    brightness: Brightness.dark,
+                    textTheme: TextTheme(
+                      headline1:
+                          TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+                      headline5:
+                          TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
+                      headline6:
+                          TextStyle(fontSize: 30, fontStyle: FontStyle.italic),
+                      bodyText1: TextStyle(fontSize: 20),
+                      bodyText2: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  title: 'Crash Free',
+                  debugShowCheckedModeBanner: false,
+                );
+              }
+              return Center(child: CircularProgressIndicator(),);
+            }));
   }
 }
