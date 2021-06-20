@@ -110,8 +110,32 @@ class HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Accelerometer'),
-                        Text(userDocument['accelerometerValue']
+                        Text('Initial Pitch'),
+                        Text(userDocument['pitchValueInitial']
+                            .toString()),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Initial Roll'),
+                        Text(userDocument['rollValueInitial']
+                            .toString()),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Actual Pitch'),
+                        Text(userDocument['pitchValue']
+                            .toString()),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Actual Roll'),
+                        Text(userDocument['rollValue']
                             .toString()),
                       ],
                     ),
