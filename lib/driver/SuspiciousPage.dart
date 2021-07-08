@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SuspiciousPage extends StatefulWidget {
   final int notifyTime;

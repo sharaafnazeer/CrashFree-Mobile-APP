@@ -1,16 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crash_free_mobile_app/AccidentAlert.dart';
 import 'package:crash_free_mobile_app/Login.dart';
 import 'package:crash_free_mobile_app/Register.dart';
 import 'package:crash_free_mobile_app/Splash.dart';
 import 'package:crash_free_mobile_app/Welcome.dart';
 import 'package:crash_free_mobile_app/driver/DriverHome.dart';
 import 'package:crash_free_mobile_app/driver/DrowsyPage.dart';
-import 'package:crash_free_mobile_app/driver/SuspiciousPage.dart';
 import 'package:crash_free_mobile_app/util/LocationProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,17 +19,12 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  getUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId');
-  }
   @override
   Widget build(BuildContext context) {
 
 
     Future<FirebaseApp> fbApp = Firebase.initializeApp();
-    return MultiProvider(
+    return OverlaySupport(child: MultiProvider(
         providers: [
           ChangeNotifierProvider(
             create: (context) => LocationProvider(),
@@ -75,6 +69,6 @@ class MyApp extends StatelessWidget {
                 );
               }
               return Center(child: CircularProgressIndicator(),);
-            }));
+            })));
   }
 }

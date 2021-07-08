@@ -1,12 +1,15 @@
+import 'package:crash_free_mobile_app/AccidentAlert.dart';
+import 'package:crash_free_mobile_app/api/AuthAPI.dart';
 import 'package:crash_free_mobile_app/api/CloseCircleAPI.dart';
 import 'package:crash_free_mobile_app/api/VehicleApi.dart';
 import 'package:crash_free_mobile_app/models/CloseCircleUser.dart';
+import 'package:crash_free_mobile_app/models/PushNotification.dart';
 import 'package:crash_free_mobile_app/models/Vehicle.dart';
-import 'package:crash_free_mobile_app/util/LocationProvider.dart';
 import 'package:crash_free_mobile_app/util/UserSession.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'CloseCircle.dart';
 import 'Home.dart';
@@ -14,6 +17,18 @@ import 'MyVehicle.dart';
 import 'Profile.dart';
 import 'closeCircle/CircleView.dart';
 import 'myVehicle/AddEditVehicle.dart';
+
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  debugPrint("Background service handler");
+  print("Handling a background message: ${message.messageId}");
+}
+
+Future<void> saveTokenToDatabase(String token) async {
+  // Assume user is logged in for this example
+  await updateToken(token).then((value) => {
+    debugPrint(value.toString())
+  });
+}
 
 class DriverHome extends StatefulWidget {
   @override
@@ -31,12 +46,108 @@ class DriverHomeState extends State<DriverHome> {
     VehiclePage(),
     ProfilePage(),
   ];
+  FirebaseMessaging _messaging;
+  PushNotification _notificationInfo;
 
   @override
   void initState() {
+
+    FirebaseMessaging.instance.getToken().then((value) => {
+      saveTokenToDatabase(value)
+    });  
+
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase); 
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      debugPrint("Clicked Message");
+      
+      PushNotification notification = PushNotification(
+        title: message.notification?.title,
+        body: message.notification?.body,
+        dataTitle: message.data['title'],
+        dataBody: message.data['body'],
+      );
+      setState(() {
+        _notificationInfo = notification;
+      });
+
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AccidentAlert(notification)));
+      
+    });
+    checkForInitialMessage();
     super.initState();
     futureAllUsers = fetchAllUsers();
-    // Navigator.popUntil(context, ModalRoute.withName('/driverHome'));
+  }
+
+  // For handling notification when the app is in terminated state
+  checkForInitialMessage() async {
+    await Firebase.initializeApp();
+    RemoteMessage initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      PushNotification notification = PushNotification(
+        title: initialMessage.notification?.title,
+        body: initialMessage.notification?.body,
+      );
+      debugPrint("Notification Body ");
+      setState(() {
+        _notificationInfo = notification;
+      });
+    }
+  }
+
+  void registerNotification() async {
+    // 1. Initialize the Firebase app
+    await Firebase.initializeApp();
+
+    // 2. Instantiate Firebase Messaging
+    _messaging = FirebaseMessaging.instance;
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // 3. On iOS, this helps to take the user permissions
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+      // For handling the received notifications
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        // Parse the message received
+        PushNotification notification = PushNotification(
+          title: message.notification?.title,
+          body: message.notification?.body,
+          dataTitle: message.data['title'],
+          dataBody: message.data['body'],
+        );
+
+        setState(() {
+          _notificationInfo = notification;
+        });
+
+        if (notification != null) {
+        // For displaying the notification as an overlay
+        showSimpleNotification(
+            Text(_notificationInfo.title),
+            leading: null,
+            subtitle: Text(_notificationInfo.body),
+            background: Colors.cyan.shade700,
+            duration: Duration(seconds: 2),
+          );
+        }
+      });
+    } else {
+      debugPrint('User declined or has not accepted permission');
+    }
   }
 
   @override
