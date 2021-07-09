@@ -175,8 +175,8 @@ class HomePageState extends State<HomePage> {
               alignment: Alignment.center,
               child: new Image.asset(
                 'images/img.png',
-                height: 150.0,
-                fit: BoxFit.fill,
+                height: 100.0,
+                fit: BoxFit.contain,
               ),
             ),
             Container(
@@ -221,7 +221,7 @@ class HomePageState extends State<HomePage> {
             ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: double.infinity),
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 12.0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 6.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

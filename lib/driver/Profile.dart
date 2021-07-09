@@ -95,7 +95,7 @@ class ProfileFormState extends State<ProfileForm> {
             constraints: const BoxConstraints(minWidth: double.infinity),
             child : Padding(
               padding: EdgeInsets.fromLTRB(0, 24.0, 0, 24.0),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
