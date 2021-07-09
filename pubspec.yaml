@@ -38,6 +38,7 @@ dependencies:
   overlay_support: ^1.2.1
   location:
   provider:
+  url_launcher:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

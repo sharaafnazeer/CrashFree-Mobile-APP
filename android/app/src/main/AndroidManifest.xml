@@ -3,6 +3,17 @@
     <!-- Required to fetch data from the internet. -->
      <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="30" />
+      <!-- Provide required visibility configuration for API level 30 and above -->
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <data android:scheme="https" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.DIAL" />
+      <data android:scheme="tel" />
+    </intent>
+  </queries>
    <application
         android:usesCleartextTraffic="true"
         android:label="crash_free_mobile_app"

@@ -65,12 +65,19 @@ class DriverHomeState extends State<DriverHome> {
       PushNotification notification = PushNotification(
         title: message.notification?.title,
         body: message.notification?.body,
-        dataTitle: message.data['title'],
-        dataBody: message.data['body'],
+        name: message.data['name'],
+        phone: message.data['phone'],
+        type: message.data['type'],
+        vehicle: message.data['vehicle'],
+        vehicleNo: message.data['vehicleNo'],
+        lastLocationLat: message.data['lastLocationLat'],
+        lastLocationLong: message.data['lastLocationLong'],
       );
       setState(() {
         _notificationInfo = notification;
       });
+
+      
 
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AccidentAlert(notification)));
       
@@ -90,11 +97,19 @@ class DriverHomeState extends State<DriverHome> {
       PushNotification notification = PushNotification(
         title: initialMessage.notification?.title,
         body: initialMessage.notification?.body,
+        name: initialMessage.data['name'],
+        phone: initialMessage.data['phone'],
+        type: initialMessage.data['type'],
+        vehicle: initialMessage.data['vehicle'],
+        vehicleNo: initialMessage.data['vehicleNo'],
+        lastLocationLat: initialMessage.data['lastLocationLat'],
+        lastLocationLong: initialMessage.data['lastLocationLong'],
       );
       debugPrint("Notification Body ");
       setState(() {
         _notificationInfo = notification;
       });
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AccidentAlert(notification)));
     }
   }
 
@@ -126,8 +141,13 @@ class DriverHomeState extends State<DriverHome> {
         PushNotification notification = PushNotification(
           title: message.notification?.title,
           body: message.notification?.body,
-          dataTitle: message.data['title'],
-          dataBody: message.data['body'],
+          name: message.data['name'],
+          phone: message.data['phone'],
+          type: message.data['type'],
+          vehicle: message.data['vehicle'],
+          vehicleNo: message.data['vehicleNo'],
+          lastLocationLat: message.data['lastLocationLat'],
+          lastLocationLong: message.data['lastLocationLong'],
         );
 
         setState(() {

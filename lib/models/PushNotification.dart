@@ -2,11 +2,21 @@ class PushNotification {
   PushNotification({
     this.title,
     this.body,
-    this.dataTitle,
-    this.dataBody,
+    this.name,
+    this.phone,
+    this.type,
+    this.vehicle,
+    this.vehicleNo,
+    this.lastLocationLat,
+    this.lastLocationLong,
   });
   String title;
   String body;
-  String dataTitle;
-  String dataBody;
+  String name;
+  String phone;
+  String type;
+  String vehicle;
+  String vehicleNo;
+  String lastLocationLat;
+  String lastLocationLong;
 }

@@ -1,4 +1,5 @@
 import 'package:crash_free_mobile_app/models/PushNotification.dart';
+import 'package:crash_free_mobile_app/util/MapUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
@@ -31,6 +32,13 @@ class AccidentAlertState extends State<AccidentAlert> {
     Navigator.pop(context);
   }
 
+  void onMapOpen(double lat, double long) {
+    MapUtils.openMap(lat,long);
+    FlutterRingtonePlayer.stop();
+    isButtonVisible = false;
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -45,7 +53,16 @@ class AccidentAlertState extends State<AccidentAlert> {
                   ),
                   Center(
                     child: Text(
-                      "We suspect that one of your family or fried is under danger. Please kindly check whether he/she is okay at the moment",
+                      widget.notification.title,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Text(
+                      widget.notification.body,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -61,35 +78,35 @@ class AccidentAlertState extends State<AccidentAlert> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Name'),
-                        Text('Vibration'),
+                        Text(widget.notification.name),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Circle Type'),
-                        Text('Vibration'),
+                        Text(widget.notification.type),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Phone No'),
+                        Text(widget.notification.phone),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Vehicle'),
-                        Text('Vibration'),
+                        Text(widget.notification.vehicle),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Actual Pitch'),
-                        Text('Vibration'),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Actual Roll'),
-                        Text('Vibration'),
+                        Text('Vehicle No'),
+                        Text(widget.notification.vehicleNo),
                       ],
                     ),]
                   ),
@@ -112,7 +129,7 @@ class AccidentAlertState extends State<AccidentAlert> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
-                                  onEnd();
+                                  onMapOpen(double.parse(widget.notification.lastLocationLat), double.parse(widget.notification.lastLocationLong));
                                 },
                                 child: Text('CHECK MAP'),
                               ),
