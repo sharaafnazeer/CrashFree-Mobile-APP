@@ -11,7 +11,7 @@ class Welcome extends StatelessWidget {
           Positioned(
             top: 0,
             child:  HeroImage(
-              height:  MediaQuery.of(context).size.height * 0.75,
+              height:  MediaQuery.of(context).size.height * 0.50,
             ),
           ),
           // SizedBox(height: 10,),
@@ -20,11 +20,11 @@ class Welcome extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
               width:  MediaQuery.of(context).size.width,
-              height:  MediaQuery.of(context).size.height * 0.3,
+              height:  MediaQuery.of(context).size.height * 0.4,
               child: Column(
                 children: [
                   Text('Welcome to CrashFree Application', style: Theme.of(context).textTheme.headline5),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
                   CustomButton(buttonText : 'Getting Started', onBtnPressed : () {
 
                     Navigator.restorablePushNamed(context, '/login');
