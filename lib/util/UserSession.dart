@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSession {
@@ -15,6 +13,9 @@ class UserSession {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', null);
     prefs.setBool('verified', false);
+    prefs.setBool('driving', false);
+    prefs.setBool('vehicleId', null);
+    prefs.setBool('userId', null);
   }
 
   static Future<String> getSession () async {

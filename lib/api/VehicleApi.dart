@@ -1,8 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:crash_free_mobile_app/models/ApiResponse.dart';
 import 'package:crash_free_mobile_app/models/Vehicle.dart';
 import 'package:crash_free_mobile_app/util/UserSession.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -16,6 +16,7 @@ Future<List<Vehicle>> fetchAllVehicles() async {
   if (response.statusCode == 200) {
     Iterable iterable = ApiResponse.fromJson(jsonDecode(response.body)).response;
     List<Vehicle> vehicles = List<Vehicle>.from(iterable.map((model)=> Vehicle.fromJson(model)));
+    debugPrint(vehicles.toString());
     return vehicles;
   } else {
     throw Exception('Failed to load vehicles');

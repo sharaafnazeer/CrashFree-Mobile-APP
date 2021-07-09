@@ -1,10 +1,6 @@
 import 'package:crash_free_mobile_app/api/DrivingApi.dart';
-import 'package:crash_free_mobile_app/util/UserSession.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DrowsyPage extends StatefulWidget {
   @override

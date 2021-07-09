@@ -1,13 +1,13 @@
-import 'package:crash_free_mobile_app/Welcome.dart';
 import 'package:crash_free_mobile_app/api/AuthAPI.dart';
-import 'package:crash_free_mobile_app/driver/DriverHome.dart';
 import 'package:crash_free_mobile_app/util/RouteGenerator.dart';
+import 'package:crash_free_mobile_app/util/toast.dart';
 import 'package:crash_free_mobile_app/widgets/CustomButton.dart';
 import 'package:crash_free_mobile_app/widgets/HeroImage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'driver/myVehicle/AddEditVehicle.dart';
+import 'models/ApiResponse.dart';
 import 'models/User.dart';
 
 class RegisterPage  extends StatefulWidget {
@@ -21,6 +21,7 @@ class RegisterPageState extends State<RegisterPage> {
 
   final _formKey = GlobalKey<FormState>();
   String email, password;
+  ApiResponse response;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -136,7 +137,7 @@ class RegisterPageState extends State<RegisterPage> {
                           labelText: 'Address',
                           labelStyle: TextStyle(fontSize: 20),
                         ),
-                        controller: emailController,
+                        controller: addressController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your address';
@@ -185,13 +186,10 @@ class RegisterPageState extends State<RegisterPage> {
                           user.address = address;
 
                           await register(user).then((value) => {
-                            
-                              print(value.token),
-                              saveCredentials(value.token, value.verified)
-                              ,Navigator.of(context).pushNamedAndRemoveUntil(
-                                RouteGenerator.driverMain,
-                                (Route<dynamic> route) => false
-                              )
+                              response = value,
+                              showSuccess(response.response),
+                              Navigator.of(context, rootNavigator: true).pop(),
+                              Navigator.pop(context)
                             });   
                             
                         }

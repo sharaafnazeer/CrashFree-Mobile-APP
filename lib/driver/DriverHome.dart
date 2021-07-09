@@ -368,7 +368,7 @@ class Search extends SearchDelegate {
           if (snapshot.connectionState != ConnectionState.done) {
             // return: show loading widget
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text("Driver Home Loading"),
             );
           }
           if (snapshot.hasError) {

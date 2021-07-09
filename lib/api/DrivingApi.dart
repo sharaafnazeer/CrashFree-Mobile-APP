@@ -8,7 +8,7 @@ import 'dart:convert';
 
 
 Future<ApiResponse> startStopDriving(String vehicleId, bool driving, double lat, double long) async {
-  debugPrint('Network call ===>' + driving.toString());
+  debugPrint('Network call ===>' + vehicleId.toString());
   final userSession = await UserSession.getSession();
   final response =
       await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/driving"), 
@@ -23,6 +23,7 @@ Future<ApiResponse> startStopDriving(String vehicleId, bool driving, double lat,
         }
       }));
   if (response.statusCode == 200) {
+    debugPrint(response.body.toString());
     return ApiResponse.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to do start stop driving');

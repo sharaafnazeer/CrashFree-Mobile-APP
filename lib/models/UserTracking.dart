@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class UserTracking {
   final bool userId;
   final String vehicleId;

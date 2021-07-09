@@ -1,4 +1,3 @@
-import 'package:crash_free_mobile_app/AccidentAlert.dart';
 import 'package:crash_free_mobile_app/Login.dart';
 import 'package:crash_free_mobile_app/Register.dart';
 import 'package:crash_free_mobile_app/Splash.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
 
 
     Future<FirebaseApp> fbApp = Firebase.initializeApp();
-    return OverlaySupport(child: MultiProvider(
+    return MultiProvider(
         providers: [
           ChangeNotifierProvider(
             create: (context) => LocationProvider(),
@@ -68,7 +67,7 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                 );
               }
-              return Center(child: CircularProgressIndicator(),);
-            })));
+              return Center(child: CircularProgressIndicator());
+            }));
   }
 }

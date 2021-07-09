@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:crash_free_mobile_app/models/ApiResponse.dart';
 import 'package:crash_free_mobile_app/models/Auth.dart';
+import 'package:crash_free_mobile_app/models/User.dart';
 import 'package:crash_free_mobile_app/util/UserSession.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -24,15 +25,16 @@ Future<Auth> login(String email, String password) async {
   }
 }
 
-Future<Auth> register(dynamic user) async {
+Future<ApiResponse> register(User user) async {
 
   final response =
       await http.post(new Uri.https("crash-free-backend.herokuapp.com", "/api/register"), 
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-      body: jsonEncode(user.toString()));
+      body: jsonEncode(user.toJson()));
 
   if (response.statusCode == 200) {
-    return Auth.fromJson(ApiResponse.fromJson(jsonDecode(response.body)).response);
+    debugPrint(response.body.toString());
+    return ApiResponse.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to register account');
   }

@@ -34,7 +34,7 @@ class _CircleViewPageState extends State<CircleViewPage> {
                 alignment: Alignment.center,
                 child: new Image.asset(
                   'images/user.png',
-                  height: 180.0,
+                  height: 120.0,
                   fit: BoxFit.cover,
                 ),
               ),

@@ -65,7 +65,6 @@ class HomePageState extends State<HomePage> {
             .snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (!snapshot.hasData) {
-            debugPrint('Errro');
             return new Text("Loading");
           }
           var userDocument = snapshot.data;
@@ -171,8 +170,7 @@ class HomePageState extends State<HomePage> {
   Widget location() {
     return Consumer<LocationProvider>(
       builder: (consumerContext, model, child) {
-        if (model.locationPosition != null) {
-          return Column(children: <Widget>[
+        return Column(children: <Widget>[
             Container(
               alignment: Alignment.center,
               child: new Image.asset(
@@ -188,7 +186,7 @@ class HomePageState extends State<HomePage> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     // return: show loading widget
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Text("Loading"),
                     );
                   }
                   if (snapshot.hasError) {
@@ -198,13 +196,14 @@ class HomePageState extends State<HomePage> {
                     );
                   }
                   List<Vehicle> vehicles = snapshot.data ?? [];
+                  debugPrint(vehicles.map((e) => e.id.toString()).toString());
                   return DropdownButton(
                       hint: Text("Select"),
                       value: vehicleId,
                       isExpanded: true,
                       items: vehicles
                           .map((fc) => DropdownMenuItem<String>(
-                                child: new Text(fc.type + " ==> " + fc.vehicleNo,
+                                child: new Text(fc.model + " ==> " + fc.vehicleNo,
                                     style: new TextStyle(color: Colors.white)),
                                 value: fc.id,
                               ))
@@ -270,12 +269,11 @@ class HomePageState extends State<HomePage> {
                       ],
                     )))
           ]);
-        }
 
-        return Container(
-            child: Center(
-          child: CircularProgressIndicator(),
-        ));
+        // return Container(
+        //     child: Center(
+        //   child: Text("Home Loading"),
+        // ));
       },
     );
   }

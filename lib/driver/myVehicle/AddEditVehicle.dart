@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:crash_free_mobile_app/api/VehicleApi.dart';
 import 'package:crash_free_mobile_app/models/ApiResponse.dart';
 import 'package:crash_free_mobile_app/models/Vehicle.dart';
