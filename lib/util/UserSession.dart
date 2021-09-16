@@ -5,6 +5,7 @@ class UserSession {
   static Future<bool> userLoggedIn () async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userId = prefs.getString('token');
+    prefs.setBool('driving', false);
     return userId != null;
 
   }

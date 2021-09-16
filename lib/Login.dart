@@ -145,4 +145,5 @@ saveCredentials (String token, bool active, String id) async {
     prefs.setString('token', token);
     prefs.setBool('verified', active);
     prefs.setString('userId', id);
+    prefs.setBool('driving', false);
 }
